@@ -20,21 +20,18 @@ LOCAL_COMMIT_ID=$(git rev-parse --short HEAD)
 export SOURCE_PATH=$(pwd)
 export BR2_PATH=$SOURCE_PATH/buildroot
 
-echo " _____ _____ ___    __ __             _   _ _____ _____ _____ "
-echo "| __  | __  |_  |  |  |  |_ _ ___ _ _| |_|_|   __| __  |     |"
-echo "| __ -|    -|  _|  |_   _| | |- _| | | '_| |__   | __ -|   --|"
-echo "|_____|__|__|___|    |_| |___|___|___|_,_|_|_____|_____|_____|"
+
 echo -e "Commit:      $LOCAL_COMMIT_ID\n"
 
 # WSL SUpport
 if [ $(uname -r | grep -c "WSL1") -eq 1 ];
 then
     # Not support WSL 1
-    echo "#### Buildroot-YuzukiSBC Not Support WSL 1 ####"
+    echo "#### buildroot-zero-w Not Support WSL 1 ####"
     exit 1
 elif [ $(uname -r | grep -c "WSL2") -eq 1 ];
 then
-    echo "Buildroot-YuzukiSBC Now running on WSL2, setting PATH..."
+    echo "buildroot-zero-w Now running on WSL2, setting PATH..."
     export PATH="/usr/local/sbin:/usr/local/bin:/usr/sbin:/usr/bin:/sbin:/bin:/usr/games:/usr/local/games:/usr/lib/wsl/lib"
 fi
 
@@ -45,7 +42,7 @@ UpdateInfo(){
 }
 
 FetchUpdate(){
-    git fetch origin master:tmp
+    git fetch origin main:tmp
     if [ $(git diff tmp | grep -c "-") -gt 1 ];
     then
         read -r -p "Update found, Update to Remote? [y/N] " input
@@ -99,10 +96,10 @@ PATCHLEVEL=$(echo __GNUC_PATCHLEVEL__ | $compiler -E -xc - | tail -n 1)
 
 if [ $MAJOR -lt 7 ];
 then 
-    echo "#### Buildroot-YuzukiSBC Not Support GCC Version less than 7 ####"
+    echo "#### buildroot-zero-w Not Support GCC Version less than 7 ####"
 elif [ $MAJOR -gt 12 ];
 then
-    echo "#### Buildroot-YuzukiSBC Not Support GCC Version more than 12 ####"
+    echo "#### buildroot-zero-w Not Support GCC Version more than 12 ####"
 else
     echo "Your Host GCC Version is $MAJOR.$MINOR.$PATCHLEVEL"
 fi
